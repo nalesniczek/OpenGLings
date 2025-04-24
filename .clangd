@@ -1,0 +1,4 @@
+CompileFlags:
+  Add:
+    - -Iinclude  # Mówi clangd, żeby szukał w katalogu 'include'
+    - -std=c++23 
