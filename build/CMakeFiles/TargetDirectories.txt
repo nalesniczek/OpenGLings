@@ -1,0 +1,4 @@
+/home/kitajussus/github/OpenGLings/build/CMakeFiles/Main.dir
+/home/kitajussus/github/OpenGLings/build/CMakeFiles/glad.dir
+/home/kitajussus/github/OpenGLings/build/CMakeFiles/edit_cache.dir
+/home/kitajussus/github/OpenGLings/build/CMakeFiles/rebuild_cache.dir

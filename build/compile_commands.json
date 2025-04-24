@@ -1,0 +1,14 @@
+[
+{
+  "directory": "/home/kitajussus/github/OpenGLings/build",
+  "command": "/usr/bin/cc  -I/home/kitajussus/github/OpenGLings/include  -o CMakeFiles/glad.dir/src/glad.c.o -c /home/kitajussus/github/OpenGLings/src/glad.c",
+  "file": "/home/kitajussus/github/OpenGLings/src/glad.c",
+  "output": "CMakeFiles/glad.dir/src/glad.c.o"
+},
+{
+  "directory": "/home/kitajussus/github/OpenGLings/build",
+  "command": "/usr/bin/c++  -I/home/kitajussus/github/OpenGLings/include -std=gnu++17 -o CMakeFiles/Main.dir/src/main.cpp.o -c /home/kitajussus/github/OpenGLings/src/main.cpp",
+  "file": "/home/kitajussus/github/OpenGLings/src/main.cpp",
+  "output": "CMakeFiles/Main.dir/src/main.cpp.o"
+}
+]
