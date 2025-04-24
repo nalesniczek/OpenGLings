@@ -73,6 +73,7 @@ int main(){
         return -1;
     }
     glfwMakeContextCurrent(window);
+    
     //resizes the window 
     glfwSetFramebufferSizeCallback(window, framebuffer_size_callback);
 
