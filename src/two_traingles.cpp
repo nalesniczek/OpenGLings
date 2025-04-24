@@ -11,14 +11,20 @@ void shader_compile_error(unsigned int shader);
 const unsigned int SCR_WIDTH = 800;
 const unsigned int SCR_HEIGHT = 600;
 
-//fragment shader
-const char *fragmentShaderSource = "#version 330 core\n"
+//fragment shaders
+const char *fragmentShaderSource1 = "#version 330 core\n"
 "out vec4 FragColor;\n"
 "void main()\n"
 "{\n"
 " FragColor = vec4(1.0f, 0.5f, 0.2f, 1.0f);\n"
 "}\0";
 
+const char *fragmentShaderSource2 = "#version 330 core\n"
+"out vec4 FragColor;\n"
+"void main()\n"
+"{\n"
+" FragColor = vec4(0.502f, 0.0f, 1.0f, 1.0f);\n"
+"}\0";
 
 //vertex shader
 const char *vertexShaderSource = "#version 330 core\n"
@@ -33,10 +39,15 @@ int main(){
 
     //vertcies 
     float vertices[] ={
-        -0.5f, 0.5f, 0.0f,//topleft
-        -0.5f, -0.5f, 0.0f,//bottomleft
-        0.5f, -0.5f, 0.0f,//bottomright
-        0.5f, 0.5f, 0.0f//topright
+        //first triangle
+        -0.5f, 0.2f, 0.0f,//top
+        -0.9f, -0.5f, 0.0f,//bottomleft
+        -0.1f, -0.5f, 0.0f,//bottomright
+
+        //second triangle
+        0.5f, 0.2f, 0.0f,//top
+        0.1f, -0.5f, 0.0f,//bottomright
+        0.9f, -0.5f, 0.0f,//bottomleft
     };
 
     unsigned int indicies[] ={
@@ -80,45 +91,77 @@ int main(){
 
     
 
-    unsigned int fragmentShader;
-    fragmentShader = glCreateShader(GL_FRAGMENT_SHADER);
-    glShaderSource(fragmentShader, 1, &fragmentShaderSource, NULL);
-    glCompileShader(fragmentShader);
+    unsigned int fragmentShader1;
+    fragmentShader1 = glCreateShader(GL_FRAGMENT_SHADER);
+    glShaderSource(fragmentShader1, 1, &fragmentShaderSource1, NULL);
+    glCompileShader(fragmentShader1);
+
+    unsigned int fragmentShader2;
+    fragmentShader2 = glCreateShader(GL_FRAGMENT_SHADER);
+    glShaderSource(fragmentShader2, 1, &fragmentShaderSource2, NULL);
+    glCompileShader(fragmentShader2);
 
 
     //checking if compilation of vertex shader was correct
     shader_compile_error(vertexShader);
-    shader_compile_error(fragmentShader);
+    shader_compile_error(fragmentShader1);
 
 
-    //creating sahder program
-    unsigned int shaderProgram;
-    shaderProgram = glCreateProgram();
+    //creating sahder program1
+    unsigned int shaderProgram1;
+    shaderProgram1 = glCreateProgram();
 
-    glAttachShader(shaderProgram, vertexShader);
-    glAttachShader(shaderProgram, fragmentShader);
-    glLinkProgram(shaderProgram);
+    glAttachShader(shaderProgram1, vertexShader);
+    glAttachShader(shaderProgram1, fragmentShader1);
+    glLinkProgram(shaderProgram1);
 
     glDeleteShader(vertexShader);
-    glDeleteShader(fragmentShader);
+    glDeleteShader(fragmentShader1);
+
+    //creating sahder program2
+    unsigned int shaderProgram2;
+    shaderProgram2 = glCreateProgram();
+
+    glAttachShader(shaderProgram2, vertexShader);
+    glAttachShader(shaderProgram2, fragmentShader2);
+    glLinkProgram(shaderProgram2);
+
+    glDeleteShader(vertexShader);
+    glDeleteShader(fragmentShader2);
 
 
     //linking buffers
-    unsigned int VBO, VAO, EBO;
-    glGenVertexArrays(1, &VAO);
-    glGenBuffers(1, &VBO);
-    glGenBuffers(1, &EBO);
-    glBindVertexArray(VAO);
+    unsigned int VBO[2], VAO[2], EBO;
+    glGenVertexArrays(1, &VAO[0]);
+    glGenBuffers(1, &VBO[0]);
+    // glGenBuffers(1, &EBO);
+    glBindVertexArray(VAO[0]);
 
     //binding VBO
-    glBindBuffer(GL_ARRAY_BUFFER, VBO);
+    glBindBuffer(GL_ARRAY_BUFFER, VBO[0]);
     glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);
 
     //binding EBO
-    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, EBO);
-    glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(indicies), indicies, GL_STATIC_DRAW);
+    // glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, EBO);
+    // glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(indicies), indicies, GL_STATIC_DRAW);
 
-    glVertexAttribPointer(0, 3, GL_FLOAT, 0, 3 * sizeof(float), (void*)0);
+    glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), (void*)0);
+    glEnableVertexAttribArray(0);
+
+    glGenVertexArrays(1, &VAO[1]);
+    glGenBuffers(1, &VBO[1]);
+    // glGenBuffers(1, &EBO);
+    glBindVertexArray(VAO[1]);
+
+    //binding VBO
+    glBindBuffer(GL_ARRAY_BUFFER, VBO[1]);
+    glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);
+
+    //binding EBO
+    // glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, EBO);
+    // glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(indicies), indicies, GL_STATIC_DRAW);
+
+    glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), (void*)0);
     glEnableVertexAttribArray(0);
 
 
@@ -133,10 +176,16 @@ int main(){
 
 
         //using shader program
-        glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
-        glUseProgram(shaderProgram);
-        glBindVertexArray(VAO);
-        glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
+        // glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
+        glUseProgram(shaderProgram1);
+        glBindVertexArray(VAO[0]);
+        // glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
+        glDrawArrays(GL_TRIANGLES, 0, 3);
+        glBindVertexArray(0);
+
+        glUseProgram(shaderProgram2);
+        glBindVertexArray(VAO[0]);
+        glDrawArrays(GL_TRIANGLES, 3, 3);
         glBindVertexArray(0);
 
 
