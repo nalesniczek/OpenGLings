@@ -1,19 +1,44 @@
+/*this file contains program before creating Shaderclass,
+ so everything is in one place like shaders's source code and compiling them
+*/
+
 #include <iostream>
 #include <cmath>
 #include <glad/glad.h>
 #include <GLFW/glfw3.h>
-#include "Shader.hpp"
-
 
 
 void framebuffer_size_callback(GLFWwindow* window, int width, int height);
 void processInput(GLFWwindow *window);
-
+void shader_compile_error(unsigned int shader);
 
 
 const unsigned int SCR_WIDTH = 800;
 const unsigned int SCR_HEIGHT = 600;
 
+float timeValue;
+float greenValue;
+int vertexColorLocation;
+
+//vertex shader
+const char *vertexShaderSource = "#version 330 core\n"
+"layout (location = 0) in vec3 aPos;\n"
+"layout (location = 1) in vec3 aColor;\n"
+"out vec3 ourColor;\n"
+"void main()\n"
+"{\n"
+" gl_Position = vec4(aPos, 1.0f);\n"
+" ourColor = aColor;\n"
+"}\0";
+
+ //fragment shader
+ const char *fragmentShaderSource = "#version 330 core\n"
+ "out vec4 FragColor;\n"
+ "in vec3 ourColor;\n"
+ "void main()\n"
+ "{\n"
+ " FragColor = vec4(ourColor, 1.0f);\n"
+ "}\0";
 
 
 int main(){
@@ -59,7 +84,37 @@ int main(){
 
     glViewport(0,0,SCR_WIDTH,SCR_HEIGHT);
 
-    Shader ourShader("C:/Users/Bartek/OpenGl_working_space/src/shader_vs.txt","C:/Users/Bartek/OpenGl_working_space/src/shader_fs.txt");
+
+
+    //compiling shaders
+
+    unsigned int vertexShader;
+    vertexShader = glCreateShader(GL_VERTEX_SHADER);
+    glShaderSource(vertexShader, 1, &vertexShaderSource, NULL);
+    glCompileShader(vertexShader);
+
+
+    unsigned int fragmentShader;
+    fragmentShader = glCreateShader(GL_FRAGMENT_SHADER);
+    glShaderSource(fragmentShader, 1, &fragmentShaderSource, NULL);
+    glCompileShader(fragmentShader);
+
+
+    //checking if compilation of vertex shader was correct
+    shader_compile_error(vertexShader);
+    shader_compile_error(fragmentShader);
+
+
+    //creating sahder program
+    unsigned int shaderProgram;
+    shaderProgram = glCreateProgram();
+
+    glAttachShader(shaderProgram, vertexShader);
+    glAttachShader(shaderProgram, fragmentShader);
+    glLinkProgram(shaderProgram);
+
+    glDeleteShader(vertexShader);
+    glDeleteShader(fragmentShader);
 
 
     //linking buffers
@@ -98,8 +153,13 @@ int main(){
         glClear(GL_COLOR_BUFFER_BIT);
 
 
-    
-        ourShader.use();
+        //using shader program
+        // timeValue = glfwGetTime();
+        // greenValue = (sin(timeValue * 10.0f) / 2.0f) + 0.5f;
+        // vertexColorLocation = glGetUniformLocation(shaderProgram, "ourColor");
+        // glUniform4f(vertexColorLocation, 1.0f, greenValue, 0.2f, 1.0f);
+
+        glUseProgram(shaderProgram);
         glBindVertexArray(VAO);
         glDrawArrays(GL_TRIANGLES, 0, 3);
         glBindVertexArray(0);
@@ -130,5 +190,15 @@ void processInput(GLFWwindow* window){
     }
     else if(glfwGetKey(window, GLFW_KEY_2) == GLFW_PRESS){
         glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
+    }
+}
+void shader_compile_error(unsigned int shader){
+    int success;
+    char infoLog[512];
+    glGetShaderiv(shader, GL_COMPILE_STATUS, &success);
+
+    if(!success){
+        glGetShaderInfoLog(shader, 512, NULL, infoLog);
+        std::cout << "ERROR::SHADER::COMPILATION_FAILED\n" << infoLog << std::endl;
     }
 }

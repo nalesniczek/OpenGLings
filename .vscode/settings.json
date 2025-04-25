@@ -3,6 +3,8 @@
     "clangd.path": "C:/msys64/mingw64/bin/clangd.exe",
     "files.associations": {
         "ostream": "cpp",
-        "iostream": "cpp"
+        "iostream": "cpp",
+        "xstring": "cpp",
+        "sstream": "cpp"
     }
 }

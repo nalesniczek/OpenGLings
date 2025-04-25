@@ -25,6 +25,7 @@ int main(){
         0.5f, -0.5f, 0.0f, 0.0f, 0.0f, 1.0f//bottomright
 
     };
+    float offset = 0.5f;
 
     // unsigned int indicies[] ={
     //     0, 1, 3,
@@ -59,7 +60,7 @@ int main(){
 
     glViewport(0,0,SCR_WIDTH,SCR_HEIGHT);
 
-    Shader ourShader("C:/Users/Bartek/OpenGl_working_space/src/shader_vs.txt","C:/Users/Bartek/OpenGl_working_space/src/shader_fs.txt");
+    Shader ourShader("C:/Users/Bartek/OpenGl_working_space/src/shader_vs_ex.txt","C:/Users/Bartek/OpenGl_working_space/src/shader_fs_ex.txt");
 
 
     //linking buffers
@@ -100,6 +101,7 @@ int main(){
 
     
         ourShader.use();
+        ourShader.setFloat("xOffset", offset);
         glBindVertexArray(VAO);
         glDrawArrays(GL_TRIANGLES, 0, 3);
         glBindVertexArray(0);
