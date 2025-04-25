@@ -33,7 +33,13 @@ Generatig VAO:
 ```c++
 unsigned int VAO;
 glGenBuffer(1, &VAO);//remember to generate VAO before the VBO
-//glVertexAttribPointer(locationOfShader, sizeOfAtributte, typeOfAtributes, ifNormalised, sizeOfDatatype, (void*)offset); this is how it looks to tell GPU how it should interpret data, meh
-glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), (void*)0);//example 0 -loaction we set in shader's code, 3 - size of one attribute here it's position (I mean I haven't even satged earlier in notes what is in my verticies but like it's for me, another thing is that I write it also for me but I pretend like someone reads it lol) GL_FLOAT - what type are this attributes, GL_FALSE - means I don't want to normalise my atributes, 3*sizeof(float) - just means how much space should it prepare to interpret (void*)0 - offset in VBO, for now it's 0 but if I put more information in verticies and need to extract them then I have to set offset (no Idea what (void*) means, I read something on the interent still nothing)
+/*glVertexAttribPointer(locationOfShader, sizeOfAtributte, typeOfAtributes, ifNormalised, sizeOfDatatype, (void*)offset); this is how it looks to tell 
+GPU how it should interpret data, meh*/
+glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), (void*)0);/*example 0 -loaction we set in shader's code, 3 - size of one attribute 
+here it's position (I mean I haven't even satged earlier in notes what is in my verticies but like it's for me, another thing is that I write it also 
+for me but I pretend like someone reads it lol) GL_FLOAT - what type are this attributes, GL_FALSE - means I don't want to normalise my atributes, 
+3*sizeof(float) - just means how much space should it prepare to interpret (void*)0 - offset in VBO, for now it's 0 but if I put more information in 
+verticies and need to extract them then I have to set offset (no Idea what (void*) means, I read something on the interent still nothing)
+*/
 glEnableVertexAttribArray(0);
 ```
