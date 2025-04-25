@@ -24,7 +24,8 @@ Generating the VBO:
 unsigned int VBO;//why int? oh becasue we are creating ID for VBO
 glGenBuffer(1, &VBO);//we are generating 1 buffer and assign it to VBO's adress
 glBindBuffer(GL_ARRAY_BUFFER, VBO);//now we are telling opengl what's the VBO
-glBufferData(GL_ARRAY_BUFFER, sizeof(verticies), verticies, GL_STATIC_DRAW);//and now giving opengl data for VBO for us it's array of vertcies, it's like points to draw and we tell, how we want to draw it, now for GL_STATIC_DRAW, if we want to change data a lot GL_DYNAMIC_DRAW
+glBufferData(GL_ARRAY_BUFFER, sizeof(verticies), verticies, GL_STATIC_DRAW);/*and now giving opengl data for VBO for us it's array of vertcies, it's
+ like points to draw and we tell, how we want to draw it, now for GL_STATIC_DRAW, if we want to change data a lot GL_DYNAMIC_DRAW*/
 ```
 
 VAO - Vertex Array Object
